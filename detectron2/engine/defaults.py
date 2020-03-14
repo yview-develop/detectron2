@@ -118,7 +118,7 @@ def default_setup(cfg, args):
         path = os.path.join(output_dir, "config.yaml")
         with PathManager.open(path, "w") as f:
             f.write(cfg.dump())
-        logger.info("Full config saved to {}".format(os.path.abspath(path)))
+        logger.info("Full config saved to {}".format(path))
 
     # make sure each worker has a different, yet deterministic seed if specified
     seed_all_rng(None if cfg.SEED < 0 else cfg.SEED + rank)
@@ -449,8 +449,11 @@ class DefaultTrainer(SimpleTrainer):
         It is not implemented by default.
         """
         raise NotImplementedError(
-            "Please either implement `build_evaluator()` in subclasses, or pass "
-            "your evaluator as arguments to `DefaultTrainer.test()`."
+            """
+If you want DefaultTrainer to automatically run evaluation,
+please implement `build_evaluator()` in subclasses (see train_net.py for example).
+Alternatively, you can call evaluation functions yourself (see Colab balloon tutorial for example).
+"""
         )
 
     @classmethod
